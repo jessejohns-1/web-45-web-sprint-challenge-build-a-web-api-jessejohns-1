@@ -13,13 +13,10 @@ router.get('/', (req, res, next) => {
 })
 
 
-//Get by id2
 router.get("/:id",validateID, (req, res) =>{
     res.json(req.project)
 }) 
 
-
-//Post projects3
 router.post("/",validateBody, async (req, res, next) =>{
     try{
         const newProject = await Projects.insert({
@@ -33,9 +30,20 @@ router.post("/",validateBody, async (req, res, next) =>{
     }
 }) 
 
-//put update projects4
-router.put("/:id",validateID,validateBody, (req, res) =>{
-    console.log("hello")
+router.put("/:id",validateID,validateBody, (req, res, next) =>{
+   const  {name, description, completed} = req
+   const {id} = req.params.id
+    Projects.update(id, {
+    name:name,
+    description:description,
+    completed:completed})
+    .then(()=> {
+        return Projects.get(id)
+    })
+        .then(project =>{
+            res.json(project)
+        })
+        .catch(next)
 }) 
 
 //Delete project by id

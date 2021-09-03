@@ -31,27 +31,26 @@ router.post("/",validateBody, async (req, res, next) =>{
 }) 
 
 router.put("/:id",validateID,validateBody, (req, res, next) =>{
-   const  {name, description, completed} = req
-   const {id} = req.params.id
-    Projects.update(id, {
-    name:name,
-    description:description,
-    completed:completed})
-    .then(()=> {
-        return Projects.get(id)
+    Projects.update(req.params.id, {
+        name: req.name,
+        description: req.description,
+        completed: req.completed
     })
-        .then(project =>{
-            res.json(project)
-        })
+        .then(() => {
+                return Projects.get(req.params.id)
+    })
+        .then(project => {
+                res.json(project)
+    })
         .catch(next)
-}) 
+    })
 
 //Delete project by id
 router.delete("/:id",validateID, async (req, res, next) =>{
-    const {id} = req.params.id
+    const id = req.params.id
     try{
-        await Projects.remove(id)
-        res.json(res.project)
+        const results = await Projects.remove(id)
+        res.json(results)
         
     } catch (err) {
         next(err)
@@ -59,8 +58,12 @@ router.delete("/:id",validateID, async (req, res, next) =>{
    });
 
 //get project by id actions
-router.get("/:id/actions",validateID, (req, res) =>{
-    console.log("hello")
+router.get("/:id/actions",validateID, (req, res, next) =>{
+    Projects.getProjectActions(req.params.id)
+    .then(actions => {
+        {res.json(actions)}
+    })
+    .catch(next)
 }) 
 
 

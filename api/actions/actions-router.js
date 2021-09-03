@@ -12,7 +12,7 @@ router.get('/', (req, res, next)=>{
 })
 
 router.get('/:id', ( req, res)=>{
-    console.log('hello')
+    res.json(req.actions)
 })
 
 router.post('/',( req, res)=>{

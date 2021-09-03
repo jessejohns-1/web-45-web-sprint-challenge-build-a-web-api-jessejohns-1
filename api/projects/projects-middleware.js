@@ -31,7 +31,9 @@ async function validateBody(req, res, next) {
         req.description = description.trim()
         req.completed = completed
         next()
-}}
+        }
+
+    }
 
 
 module.exports = { validateID, validateBody}

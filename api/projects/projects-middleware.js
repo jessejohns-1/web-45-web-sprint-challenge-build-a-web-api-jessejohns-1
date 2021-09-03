@@ -16,15 +16,23 @@ async function validateID(req, res, next) {
       })
 }}
 
-function validateBody(req, res, next) {
+async function validateBody(req, res, next) {
     const { name, description, completed } = req.body 
     if( !name || !name.trim()){
         res.status(400).json({
             message: 'missing required name field'
         })
-    }else if
+    }else if(!description || !description.trim()) {
+        res.status(400).json({
+            message: 'missing required description field'
+        })}
+        else {
+            req.name = name.trim()
+            req.completed = completed
+            next()
+        }
 
     }
 
 
-module.exports = { validateID }
+module.exports = { validateID, validateBody}

@@ -12,7 +12,7 @@ router.get('/', (req, res, next)=>{
     .catch(next)
 })
 
-router.get('/:id',ActionID, ( req, res, next)=>{
+router.get('/:id',ActionID, ( req, res)=>{
     res.json(req.actions)
 })
 
@@ -48,8 +48,14 @@ router.put('/:id',ActionID, ActionBody,( req, res, next)=>{
     .catch(next)
 })
 
-router.delete('/:id',( req, res)=>{
-    console.log('hello')
+router.delete('/:id', ActionID, async ( req, res, next)=>{
+    try{
+       const daddy = await Actions.remove(req.params.id)
+        res.json(daddy)
+    }catch (err) {
+        next(err)
+    }
+    
 })
 
 

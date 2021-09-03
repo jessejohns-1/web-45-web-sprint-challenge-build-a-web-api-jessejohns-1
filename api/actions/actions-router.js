@@ -1,6 +1,7 @@
 const express = require('express');
 const Actions = require('./actions-model')
 const router = express.Router();
+const {ActionID, ActionBody} = require('./actions-middlware')
 
 router.get('/', (req, res, next)=>{
     Actions.get()
@@ -11,16 +12,40 @@ router.get('/', (req, res, next)=>{
     .catch(next)
 })
 
-router.get('/:id', ( req, res)=>{
+router.get('/:id',ActionID, ( req, res, next)=>{
     res.json(req.actions)
 })
 
-router.post('/',( req, res)=>{
-    console.log('hello')
-})
+router.post('/', ActionBody, async (req, res, next) => {
+    try {
+        const newAction = await Actions.insert({
+            project_id: req.project_id,
+            description: req.description,
+            notes: req.notes,
+            completed: req.completed
+    })
+            res.status(201).json(newAction)
+    } catch (err) {
+            next(err)
+    }
+    })
 
-router.put('/:id',( req, res)=>{
-    console.log('hello')
+
+router.put('/:id',ActionID, ActionBody,( req, res, next)=>{
+    Actions.update(req.params.id, {
+        project_id: req.project_id,
+        description: req.description,
+        notes: req.notes,
+        completed: req.completed
+
+    })
+    .then(() => {
+        return Actions.get(req.params.id)
+    })
+    .then(action => {
+        res.json(action)
+    })
+    .catch(next)
 })
 
 router.delete('/:id',( req, res)=>{

@@ -17,29 +17,29 @@ async function ActionID(req, res, next) {
       })
 }}
 
-async function validateBody(req, res, next) {
+async function ActionBody(req, res, next) {
     const { project_id, description, completed, notes } = req.body
-    if (!project_id || !project_id.trim()) {
+if (!project_id || !project_id) {
         res.status(400).json({
-        message: 'missing required name field'
+            message: 'missing project id'
 })
-    } else if (!description || !description.trim()) {
+} else if (!description || !description.trim()) {
         res.status(400).json({
-        message: 'missing required description field'
-})}else if(!notes || notes.trim()){
-    res.status(400).json({
-        message: 'Missing your notes!'
-    })
+            message: 'missing description'
+})
+} else if (!notes || !notes.trim()) {
+        res.status(400).json({
+            message: 'missing notes'
+})
 }
     else {
-        req.project_id = project_id.trim()
+        req.project_id = project_id
         req.description = description.trim()
         req.notes = notes.trim()
         req.completed = completed
         next()
-        }
+}
+}
 
-    }
 
-
-module.exports = { ActionID, validateBody}
+module.exports = { ActionID, ActionBody}

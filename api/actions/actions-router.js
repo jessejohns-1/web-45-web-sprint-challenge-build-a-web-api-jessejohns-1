@@ -1,6 +1,5 @@
 const express = require('express');
 const Actions = require('./actions-model')
-
 const router = express.Router();
 
 router.get('/', (req, res, next)=>{
@@ -12,7 +11,7 @@ router.get('/', (req, res, next)=>{
     .catch(next)
 })
 
-router.get('/:id',( req, res)=>{
+router.get('/:id', ( req, res)=>{
     console.log('hello')
 })
 

@@ -1,5 +1,5 @@
 const express = require('express');
-
+const {validateID} = require('./projects-middleware')
 const Projects = require('./projects-model')
 
 const router = express.Router();
@@ -14,8 +14,8 @@ router.get('/', (req, res, next) => {
 
 
 //Get by id2
-router.get("/:id", (req, res) =>{
-    console.log("hello")
+router.get("/:id",validateID, (req, res) =>{
+    res.json(req.project)
 }) 
 
 
